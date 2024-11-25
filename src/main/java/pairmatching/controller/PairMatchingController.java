@@ -10,6 +10,7 @@ import pairmatching.view.OutputView;
 public class PairMatchingController {
     public void run() {
         String selection = selectMainMenu();
+        OutputView.printCourseInformation();
     }
 
     private String selectMainMenu() {
