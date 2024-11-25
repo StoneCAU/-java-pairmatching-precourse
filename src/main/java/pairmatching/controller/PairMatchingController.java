@@ -9,8 +9,13 @@ import pairmatching.view.OutputView;
 
 public class PairMatchingController {
     public void run() {
-        String selection = selectMainMenu();
-        OutputView.printCourseInformation();
+        String selection;
+
+        do {
+            selection = selectMainMenu();
+            OutputView.printCourseInformation();
+            if (selection.equals("1")) pairMatching();
+        } while (!selection.equals("Q"));
     }
 
     private String selectMainMenu() {
@@ -25,6 +30,23 @@ public class PairMatchingController {
             }
         }
     }
+
+    private List<String> selectMatching() {
+        while (true) {
+            try {
+                String input = InputView.inputMatchingInfo();
+                return InputValidator.validateMatchingInfo(input);
+            } catch (PairMatchingException e) {
+                OutputView.printErrorMessage(e.getMessage());
+            }
+        }
+    }
+
+    private void pairMatching() {
+        List<String> matchingInfo = selectMatching();
+
+    }
+
 
     private List<String> getBackendCrew() {
         return CrewLoader.loadBackendCrew();
