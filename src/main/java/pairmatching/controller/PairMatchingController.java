@@ -14,7 +14,7 @@ import pairmatching.view.InputView;
 import pairmatching.view.OutputView;
 
 public class PairMatchingController {
-    private final MatchingResult matchingResult;
+    private MatchingResult matchingResult;
 
     public PairMatchingController(MatchingResult matchingResult) {
         this.matchingResult = matchingResult;
@@ -28,7 +28,7 @@ public class PairMatchingController {
             OutputView.printCourseInformation();
             if (selection.equals("1")) pairMatching();
             if (selection.equals("2")) viewPairMatchingResult();
-            if (selection.equals("3")) resetMatchingResult();
+            if (selection.equals("3")) matchingResult = resetMatchingResult();
         } while (!selection.equals("Q"));
     }
 
@@ -114,10 +114,15 @@ public class PairMatchingController {
     }
 
     private void viewPairMatchingResult() {
-        MatchingInfo matchingInfo = getMatchingInfo();
-        Pairs pairs = matchingResult.findByInfo(matchingInfo);
-
-        OutputView.printPairMatchingResult(pairs);
+        while (true) {
+            try {
+                MatchingInfo matchingInfo = getMatchingInfo();
+                Pairs pairs = matchingResult.findByInfo(matchingInfo);
+                OutputView.printPairMatchingResult(pairs);
+            } catch (PairMatchingException e) {
+                OutputView.printErrorMessage(e.getMessage());
+            }
+        }
     }
 
     private MatchingResult resetMatchingResult() {

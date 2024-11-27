@@ -3,6 +3,8 @@ package pairmatching.domain;
 import java.util.HashMap;
 import java.util.Map;
 import pairmatching.domain.enums.MatchingInfo;
+import pairmatching.exception.ErrorMessage;
+import pairmatching.exception.PairMatchingException;
 
 public class MatchingResult {
     private static final Map<MatchingInfo, Pairs> resultMap = new HashMap<MatchingInfo, Pairs>();
@@ -20,6 +22,11 @@ public class MatchingResult {
     }
 
     public Pairs findByInfo(MatchingInfo info) {
-        return resultMap.get(info);
+        Pairs pairs = resultMap.get(info);
+
+        if (pairs == null) {
+            throw new PairMatchingException(ErrorMessage.NOT_FOUND_RESULT);
+        }
+        return pairs;
     }
 }
