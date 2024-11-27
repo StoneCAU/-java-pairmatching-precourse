@@ -34,4 +34,8 @@ public class MatchingResult {
 
         return pairs;
     }
+
+    public void reset() {
+        resultMap.clear();
+    }
 }

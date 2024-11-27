@@ -1,14 +1,12 @@
 package pairmatching.controller;
 
 import java.util.List;
-import pairmatching.domain.Crew;
 import pairmatching.domain.MatchingResult;
 import pairmatching.domain.Pairs;
 import pairmatching.domain.enums.Course;
 import pairmatching.domain.enums.Level;
 import pairmatching.domain.enums.MatchingInfo;
 import pairmatching.domain.enums.Mission;
-import pairmatching.exception.ErrorMessage;
 import pairmatching.exception.PairMatchingException;
 import pairmatching.util.CrewLoader;
 import pairmatching.util.InputValidator;
@@ -30,7 +28,7 @@ public class PairMatchingController {
             OutputView.printCourseInformation();
             if (selection.equals("1")) pairMatching();
             if (selection.equals("2")) viewPairMatchingResult();
-            if (selection.equals("3")) matchingResult = resetMatchingResult();
+            if (selection.equals("3")) resetMatchingResult();
         } while (!selection.equals("Q"));
     }
 
@@ -127,10 +125,8 @@ public class PairMatchingController {
         }
     }
 
-    private MatchingResult resetMatchingResult() {
-        MatchingResult newMatchingResult = new MatchingResult();
+    private void resetMatchingResult() {
+        matchingResult.reset();
         OutputView.printResetMessage();
-
-        return newMatchingResult;
     }
 }
