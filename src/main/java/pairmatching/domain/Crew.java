@@ -4,6 +4,7 @@ import camp.nextstep.edu.missionutils.Randoms;
 import java.util.List;
 import java.util.stream.Collectors;
 import pairmatching.domain.enums.Course;
+import pairmatching.domain.enums.MatchingInfo;
 
 public class Crew {
     private Course course;

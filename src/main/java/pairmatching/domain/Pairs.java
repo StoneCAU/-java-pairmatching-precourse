@@ -2,6 +2,7 @@ package pairmatching.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import pairmatching.domain.enums.MatchingInfo;
 
 public class Pairs {
     private final MatchingInfo matchingInfo;

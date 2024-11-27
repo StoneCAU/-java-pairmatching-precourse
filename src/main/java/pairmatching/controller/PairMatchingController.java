@@ -1,11 +1,11 @@
 package pairmatching.controller;
 
 import java.util.List;
-import pairmatching.domain.MatchingInfo;
-import pairmatching.domain.Pair;
+import pairmatching.domain.MatchingResult;
 import pairmatching.domain.Pairs;
 import pairmatching.domain.enums.Course;
 import pairmatching.domain.enums.Level;
+import pairmatching.domain.enums.MatchingInfo;
 import pairmatching.domain.enums.Mission;
 import pairmatching.exception.PairMatchingException;
 import pairmatching.util.CrewLoader;
@@ -14,6 +14,12 @@ import pairmatching.view.InputView;
 import pairmatching.view.OutputView;
 
 public class PairMatchingController {
+    private final MatchingResult matchingResult;
+
+    public PairMatchingController(MatchingResult matchingResult) {
+        this.matchingResult = matchingResult;
+    }
+
     public void run() {
         String selection;
 
@@ -49,19 +55,19 @@ public class PairMatchingController {
     }
 
     private void pairMatching() {
-        MatchingInfo matchingInfo = makeMatchingInfo();
+        MatchingInfo matchingInfo = getMatchingInfo();
         List<String> crewNames = getCrewNames(matchingInfo);
 
         Pairs pairs = new Pairs(matchingInfo, crewNames);
-
+        matchingResult.save(matchingInfo, pairs);
     }
 
-    private MatchingInfo makeMatchingInfo() {
+    private MatchingInfo getMatchingInfo() {
         List<String> matchingStr = selectMatching();
         Course course = Course.findByCourseName(matchingStr.get(0));
         Level level = Level.findByLevelName(matchingStr.get(1));
         Mission mission = Mission.findByLevelAndMissionName(level, matchingStr.get(2));
-        return new MatchingInfo(course, mission);
+        return MatchingInfo.findByCourseAndMission(course, mission);
     }
 
     private List<String> getCrewNames(MatchingInfo matchingInfo) {
