@@ -7,7 +7,7 @@ public enum ErrorMessage {
     INVALID_COURSE("존재하지 않는 코스입니다."),
     INVALID_LEVEL("존재하지 않는 단계입니다."),
     INVALID_MISSION("해당 레벨에 존재하지 않는 미션입니다."),
-    NOT_FOUND_RESULT("해당 정보에 대한 매칭 결과가 없습니다.");
+    NOT_FOUND_RESULT("매칭 이력이 없습니다.");
 
     private final String message;
 

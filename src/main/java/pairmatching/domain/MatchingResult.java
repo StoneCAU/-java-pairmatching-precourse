@@ -22,11 +22,16 @@ public class MatchingResult {
     }
 
     public Pairs findByInfo(MatchingInfo info) {
+        return resultMap.get(info);
+    }
+
+    public Pairs findResult(MatchingInfo info) {
         Pairs pairs = resultMap.get(info);
 
         if (pairs == null) {
             throw new PairMatchingException(ErrorMessage.NOT_FOUND_RESULT);
         }
+
         return pairs;
     }
 }

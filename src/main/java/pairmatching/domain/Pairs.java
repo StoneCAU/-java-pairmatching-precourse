@@ -1,15 +1,20 @@
 package pairmatching.domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import pairmatching.domain.enums.Level;
 import pairmatching.domain.enums.MatchingInfo;
+import pairmatching.domain.enums.Mission;
 
 public class Pairs {
     private final MatchingInfo matchingInfo;
     private final List<Pair> pairs;
+    private final List<String> crewNames;
 
-    public Pairs(MatchingInfo matchingInfo, List<String> crewNames) {
-        this.pairs = generatePairList(matchingInfo, crewNames);
+    public Pairs(MatchingResult matchingResult, MatchingInfo matchingInfo, List<String> crewNames) {
+        this.crewNames = crewNames;
+        this.pairs = generatePairList(matchingResult, matchingInfo);
         this.matchingInfo = matchingInfo;
     }
 
@@ -21,7 +26,7 @@ public class Pairs {
         return pairs;
     }
 
-    private List<Pair> generatePairList(MatchingInfo matchingInfo, List<String> crewNames) {
+    private List<Pair> generatePairList(MatchingResult matchingResult, MatchingInfo matchingInfo) {
         List<Crew> crews = Crew.getCrews(matchingInfo, crewNames);
         List<Pair> pairList = new ArrayList<>();
 
@@ -33,6 +38,8 @@ public class Pairs {
 
         pairList.add(new Pair(crews));
 
+        if (isRematchingInSameLevel(matchingResult, matchingInfo, pairList)) return generatePairList(matchingResult, matchingInfo);
+
         return pairList;
     }
 
@@ -43,5 +50,27 @@ public class Pairs {
 
         return new Pair(matchedCrews);
     }
+
+    private boolean isRematchingInSameLevel(MatchingResult matchingResult, MatchingInfo matchingInfo, List<Pair> newPairList) {
+        Level level = matchingInfo.getMission().getLevel();
+
+        return Arrays.stream(Mission.values())
+                .filter(mission -> mission.getLevel() == level)
+                .anyMatch(mission -> {
+                    MatchingInfo newMatchingInfo = MatchingInfo.findByCourseAndMission(matchingInfo.getCourse(), mission);
+                    Pairs originPairs = matchingResult.findByInfo(newMatchingInfo);
+                    if (originPairs == null) return false;
+                    List<Pair> originPairList = originPairs.getPairs();
+                    return hasSameMatching(originPairList, newPairList);
+                });
+    }
+
+    private boolean hasSameMatching(List<Pair> originPairList, List<Pair> newPairList) {
+        return originPairList.stream()
+                .anyMatch(pair -> newPairList.stream()
+                        .anyMatch(newPair -> newPair.equals(pair)));
+    }
+
+
 
 }

@@ -1,12 +1,14 @@
 package pairmatching.controller;
 
 import java.util.List;
+import pairmatching.domain.Crew;
 import pairmatching.domain.MatchingResult;
 import pairmatching.domain.Pairs;
 import pairmatching.domain.enums.Course;
 import pairmatching.domain.enums.Level;
 import pairmatching.domain.enums.MatchingInfo;
 import pairmatching.domain.enums.Mission;
+import pairmatching.exception.ErrorMessage;
 import pairmatching.exception.PairMatchingException;
 import pairmatching.util.CrewLoader;
 import pairmatching.util.InputValidator;
@@ -85,7 +87,7 @@ public class PairMatchingController {
             return matchingResult.findByInfo(matchingInfo);
         }
 
-        Pairs pairs = new Pairs(matchingInfo, crewNames);
+        Pairs pairs = new Pairs(matchingResult, matchingInfo, crewNames);
         matchingResult.save(matchingInfo, pairs);
         return pairs;
     }
@@ -100,9 +102,8 @@ public class PairMatchingController {
             }
         }
     }
-
     private Pairs reMatching(MatchingInfo matchingInfo, List<String> crewNames) {
-        Pairs pairs = new Pairs(matchingInfo, crewNames);
+        Pairs pairs = new Pairs(matchingResult, matchingInfo, crewNames);
         matchingResult.save(matchingInfo, pairs);
 
         return pairs;
@@ -117,8 +118,9 @@ public class PairMatchingController {
         while (true) {
             try {
                 MatchingInfo matchingInfo = getMatchingInfo();
-                Pairs pairs = matchingResult.findByInfo(matchingInfo);
+                Pairs pairs = matchingResult.findResult(matchingInfo);
                 OutputView.printPairMatchingResult(pairs);
+                return;
             } catch (PairMatchingException e) {
                 OutputView.printErrorMessage(e.getMessage());
             }

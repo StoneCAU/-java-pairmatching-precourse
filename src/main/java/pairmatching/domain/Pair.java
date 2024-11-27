@@ -1,6 +1,8 @@
 package pairmatching.domain;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Pair {
@@ -21,5 +23,21 @@ public class Pair {
         return matchedCrews.stream()
                 .map(Crew::getName)
                 .collect(Collectors.joining(DELIMITER));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pair pair = (Pair) o;
+        Set<String> oldSet = new HashSet<>(matchedCrews.stream().map(Crew::getName).collect(Collectors.toSet()));
+        Set<String> newSet = new HashSet<>(pair.matchedCrews.stream().map(Crew::getName).collect(Collectors.toSet()));
+
+        return oldSet.equals(newSet);
+    }
+
+    @Override
+    public int hashCode() {
+        return matchedCrews.hashCode();
     }
 }
