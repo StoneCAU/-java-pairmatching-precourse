@@ -1,5 +1,9 @@
 package pairmatching.domain.enums;
 
+import java.util.Arrays;
+import pairmatching.exception.ErrorMessage;
+import pairmatching.exception.PairMatchingException;
+
 public enum Mission {
     RACING_CAR(Level.LEVEL1, "자동차경주"),
     LOTTO(Level.LEVEL1, "로또"),
@@ -27,5 +31,12 @@ public enum Mission {
 
     public Level getLevel() {
         return level;
+    }
+
+    public static Mission findByLevelAndMissionName(Level level, String missionName) {
+        return Arrays.stream(Mission.values())
+                .filter(mission -> mission.getLevel() == level)
+                .filter(mission -> mission.getMissionName().equals(missionName))
+                .findFirst().orElseThrow(() -> new PairMatchingException(ErrorMessage.INVALID_MISSION));
     }
 }

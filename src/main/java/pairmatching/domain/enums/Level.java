@@ -1,5 +1,9 @@
 package pairmatching.domain.enums;
 
+import java.util.Arrays;
+import pairmatching.exception.ErrorMessage;
+import pairmatching.exception.PairMatchingException;
+
 public enum Level {
     LEVEL1("레벨1"),
     LEVEL2("레벨2"),
@@ -15,6 +19,12 @@ public enum Level {
 
     public String getName() {
         return name;
+    }
+
+    public static Level findByLevelName(String name) {
+        return Arrays.stream(Level.values())
+                .filter(level -> level.getName().equals(name))
+                .findFirst().orElseThrow(() -> new PairMatchingException(ErrorMessage.INVALID_LEVEL));
     }
 
 }
