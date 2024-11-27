@@ -2,6 +2,8 @@ package pairmatching.controller;
 
 import java.util.List;
 import pairmatching.domain.MatchingInfo;
+import pairmatching.domain.Pair;
+import pairmatching.domain.Pairs;
 import pairmatching.domain.enums.Course;
 import pairmatching.domain.enums.Level;
 import pairmatching.domain.enums.Mission;
@@ -48,6 +50,9 @@ public class PairMatchingController {
 
     private void pairMatching() {
         MatchingInfo matchingInfo = makeMatchingInfo();
+        List<String> crewNames = getCrewNames(matchingInfo);
+
+        Pairs pairs = new Pairs(matchingInfo, crewNames);
 
     }
 
@@ -59,11 +64,8 @@ public class PairMatchingController {
         return new MatchingInfo(course, mission);
     }
 
-    private List<String> getBackendCrew() {
-        return CrewLoader.loadBackendCrew();
-    }
-
-    private List<String> getFrontendCrew() {
+    private List<String> getCrewNames(MatchingInfo matchingInfo) {
+        if (matchingInfo.getCourse() == Course.BACKEND) return CrewLoader.loadBackendCrew();
         return CrewLoader.loadFrontendCrew();
     }
 }
