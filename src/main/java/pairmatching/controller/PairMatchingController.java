@@ -1,6 +1,10 @@
 package pairmatching.controller;
 
 import java.util.List;
+import pairmatching.domain.MatchingInfo;
+import pairmatching.domain.enums.Course;
+import pairmatching.domain.enums.Level;
+import pairmatching.domain.enums.Mission;
 import pairmatching.exception.PairMatchingException;
 import pairmatching.util.CrewLoader;
 import pairmatching.util.InputValidator;
@@ -43,10 +47,17 @@ public class PairMatchingController {
     }
 
     private void pairMatching() {
-        List<String> matchingInfo = selectMatching();
+        MatchingInfo matchingInfo = makeMatchingInfo();
 
     }
 
+    private MatchingInfo makeMatchingInfo() {
+        List<String> matchingStr = selectMatching();
+        Course course = Course.findByCourseName(matchingStr.get(0));
+        Level level = Level.findByLevelName(matchingStr.get(1));
+        Mission mission = Mission.findByLevelAndMissionName(level, matchingStr.get(2));
+        return new MatchingInfo(course, mission);
+    }
 
     private List<String> getBackendCrew() {
         return CrewLoader.loadBackendCrew();

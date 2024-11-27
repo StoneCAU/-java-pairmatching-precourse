@@ -2,10 +2,6 @@ package pairmatching.util;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
-import pairmatching.domain.enums.Course;
-import pairmatching.domain.enums.Level;
-import pairmatching.domain.enums.Mission;
 import pairmatching.exception.ErrorMessage;
 import pairmatching.exception.PairMatchingException;
 
@@ -32,29 +28,8 @@ public class InputValidator {
         if (parsedString.size() != 3) {
             throw new PairMatchingException(ErrorMessage.INVALID_INPUT);
         }
-        validateParsedString(parsedString);
 
         return parsedString;
-    }
-
-    private static void validateParsedString(List<String> parsedString) {
-        if (!isValidCourse(parsedString.get(0)) || !isValidLevel(parsedString.get(1)) || !isValidMission(
-                parsedString.get(1), parsedString.get(2))) {
-            throw new PairMatchingException(ErrorMessage.INVALID_INPUT);
-        }
-    }
-
-    private static boolean isValidCourse(String input) {
-        return Arrays.stream(Course.values()).anyMatch(course -> course.getName().equals(input));
-    }
-
-    private static boolean isValidLevel(String input) {
-        return Arrays.stream(Level.values()).anyMatch(level -> level.getName().equals(input));
-    }
-
-    private static boolean isValidMission(String level, String missionName) {
-        return Arrays.stream(Mission.values()).filter(mission -> mission.getLevel().getName().equals(level))
-                .anyMatch(mission -> mission.getMissionName().equals(missionName));
     }
 
     private static int parseNumber(String input) {
