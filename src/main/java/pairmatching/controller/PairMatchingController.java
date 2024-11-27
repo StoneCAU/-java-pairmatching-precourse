@@ -27,6 +27,8 @@ public class PairMatchingController {
             selection = selectMainMenu();
             OutputView.printCourseInformation();
             if (selection.equals("1")) pairMatching();
+            if (selection.equals("2")) viewPairMatchingResult();
+            if (selection.equals("3")) resetMatchingResult();
         } while (!selection.equals("Q"));
     }
 
@@ -109,5 +111,19 @@ public class PairMatchingController {
     private List<String> getCrewNames(MatchingInfo matchingInfo) {
         if (matchingInfo.getCourse() == Course.BACKEND) return CrewLoader.loadBackendCrew();
         return CrewLoader.loadFrontendCrew();
+    }
+
+    private void viewPairMatchingResult() {
+        MatchingInfo matchingInfo = getMatchingInfo();
+        Pairs pairs = matchingResult.findByInfo(matchingInfo);
+
+        OutputView.printPairMatchingResult(pairs);
+    }
+
+    private MatchingResult resetMatchingResult() {
+        MatchingResult newMatchingResult = new MatchingResult();
+        OutputView.printResetMessage();
+
+        return newMatchingResult;
     }
 }

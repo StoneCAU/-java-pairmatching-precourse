@@ -23,6 +23,7 @@ public class OutputView {
     private static final String MISSION_TITLE = "미션 : ";
 
     private static final String MATCHING_RESULT_TITLE = "페어 매칭 결과입니다.";
+    private static final String RESET_MESSAGE = "초기화 되었습니다.";
 
     private static void printNewLine() {
         System.out.printf(NEW_LINE);
@@ -53,8 +54,14 @@ public class OutputView {
 
     public static void printPairMatchingResult(Pairs pairs) {
         printNewLine();
+        System.out.println(MATCHING_RESULT_TITLE);
         pairs.getPairs()
                 .forEach(System.out::println);
+    }
+
+    public static void printResetMessage() {
+        printNewLine();
+        System.out.println(RESET_MESSAGE);
     }
 
     private static void printMissions() {
