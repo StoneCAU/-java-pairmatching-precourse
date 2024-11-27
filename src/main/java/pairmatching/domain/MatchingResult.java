@@ -18,4 +18,8 @@ public class MatchingResult {
     public void save(MatchingInfo info, Pairs pairs) {
         resultMap.put(info, pairs);
     }
+
+    public Pairs findByInfo(MatchingInfo info) {
+        return resultMap.get(info);
+    }
 }

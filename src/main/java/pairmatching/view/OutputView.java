@@ -2,6 +2,7 @@ package pairmatching.view;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import pairmatching.domain.Pairs;
 import pairmatching.domain.enums.Course;
 import pairmatching.domain.enums.Level;
 import pairmatching.domain.enums.Mission;
@@ -20,6 +21,8 @@ public class OutputView {
     private static final String COURSE = "과정 : " + Stream.of(Course.values()).map(Course::getName).collect(
             Collectors.joining(DELIMITER));
     private static final String MISSION_TITLE = "미션 : ";
+
+    private static final String MATCHING_RESULT_TITLE = "페어 매칭 결과입니다.";
 
     private static void printNewLine() {
         System.out.printf(NEW_LINE);
@@ -46,6 +49,12 @@ public class OutputView {
     public static void printErrorMessage(String message) {
         printNewLine();
         System.out.println(message);
+    }
+
+    public static void printPairMatchingResult(Pairs pairs) {
+        printNewLine();
+        pairs.getPairs()
+                .forEach(System.out::println);
     }
 
     private static void printMissions() {

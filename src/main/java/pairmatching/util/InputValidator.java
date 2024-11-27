@@ -10,6 +10,8 @@ public class InputValidator {
     private static final int MAX_MENU = 3;
     private static final String QUIT_MENU = "Q";
     private static final String DELIMITER = ", ";
+    private static final String YES = "네";
+    private static final String NO = "아니오";
 
     public static void validateMainMenu(String input) {
         if (input.equals(QUIT_MENU)) {
@@ -21,6 +23,13 @@ public class InputValidator {
         if (!isValidBound(selection)) {
             throw new PairMatchingException(ErrorMessage.INVALID_MENU_INPUT);
         }
+    }
+
+    public static String validateYesOrNo(String input) {
+        if (!input.equals(YES) && !input.equals(NO)) {
+            throw new PairMatchingException(ErrorMessage.INVALID_INPUT);
+        }
+        return input;
     }
 
     public static List<String> validateMatchingInfo(String input) {

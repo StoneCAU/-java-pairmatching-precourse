@@ -58,16 +58,52 @@ public class PairMatchingController {
         MatchingInfo matchingInfo = getMatchingInfo();
         List<String> crewNames = getCrewNames(matchingInfo);
 
-        Pairs pairs = new Pairs(matchingInfo, crewNames);
-        matchingResult.save(matchingInfo, pairs);
+        Pairs pairs = getPairs(matchingInfo, crewNames);
+        OutputView.printPairMatchingResult(pairs);
     }
 
     private MatchingInfo getMatchingInfo() {
-        List<String> matchingStr = selectMatching();
-        Course course = Course.findByCourseName(matchingStr.get(0));
-        Level level = Level.findByLevelName(matchingStr.get(1));
-        Mission mission = Mission.findByLevelAndMissionName(level, matchingStr.get(2));
-        return MatchingInfo.findByCourseAndMission(course, mission);
+        while (true) {
+            try {
+                List<String> matchingStr = selectMatching();
+                Course course = Course.findByCourseName(matchingStr.get(0));
+                Level level = Level.findByLevelName(matchingStr.get(1));
+                Mission mission = Mission.findByLevelAndMissionName(level, matchingStr.get(2));
+                return MatchingInfo.findByCourseAndMission(course, mission);
+            } catch (PairMatchingException e) {
+                OutputView.printErrorMessage(e.getMessage());
+            }
+        }
+    }
+
+    private Pairs getPairs(MatchingInfo matchingInfo, List<String> crewNames) {
+        if (matchingResult.hasResult(matchingInfo)) {
+            String reply = getReply();
+            if (reply.equals("네")) return reMatching(matchingInfo, crewNames);
+            return matchingResult.findByInfo(matchingInfo);
+        }
+
+        Pairs pairs = new Pairs(matchingInfo, crewNames);
+        matchingResult.save(matchingInfo, pairs);
+        return pairs;
+    }
+
+    private String getReply() {
+        while (true) {
+            try {
+                String reply = InputView.inputYesOrNo();
+                return InputValidator.validateYesOrNo(reply);
+            } catch (PairMatchingException e) {
+                OutputView.printErrorMessage(e.getMessage());
+            }
+        }
+    }
+
+    private Pairs reMatching(MatchingInfo matchingInfo, List<String> crewNames) {
+        Pairs pairs = new Pairs(matchingInfo, crewNames);
+        matchingResult.save(matchingInfo, pairs);
+
+        return pairs;
     }
 
     private List<String> getCrewNames(MatchingInfo matchingInfo) {
